@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Login() {
+  // using use Navigate hook form react router dom 
   const navigate = useNavigate();
-
+  // handling login button 
   const handleLogin = () => (
     alert('You are Logged In.'),
     navigate('/')

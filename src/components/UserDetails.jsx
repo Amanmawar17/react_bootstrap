@@ -3,13 +3,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+
+// Schema validation of error handling
 const schema = yup
   .object({
     name: yup.string().required(),
     email: yup.string().email().required(),
     password: yup.string().required().min(8),
-    phone: yup
-      .number()
+    phone: yup.number()
       .required()
       .test(
         'len',
@@ -20,7 +21,9 @@ const schema = yup
   })
   .required();
 
-const AccountDetails = () => {
+export default function UserDetails () {
+  // Using useState hook for state rendering
+
   const [show, setShow] = useState(false);
   const [account, setAccount] = useState({
     name: '',
@@ -30,6 +33,7 @@ const AccountDetails = () => {
     phone: '',
   });
 
+  // connecting yup function for error handling 
   const {
     register,
     handleSubmit,
@@ -38,6 +42,7 @@ const AccountDetails = () => {
     resolver: yupResolver(schema),
   });
 
+  // handling data submition
   const onSubmit = (data) => {
     setAccount(data);
     handleClose();
@@ -67,7 +72,7 @@ const AccountDetails = () => {
       <button className="btn btn-primary" onClick={handleShow}>
         Edit Account
       </button>
-
+        { /* Form as model  */}
       {show && (
         <div className="modal d-block" tabIndex="-1">
           <div className="modal-dialog">
@@ -81,6 +86,7 @@ const AccountDetails = () => {
                   onClick={handleClose}
                 ></button>
               </div>
+              {/* form for user details and edit changes to details */}
               <div className="modal-body">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="mb-3">
@@ -93,12 +99,14 @@ const AccountDetails = () => {
                       id="formName"
                       name="name"
                       autoComplete="true"
-                      {...register('name')}
+                      {...register('name', {
+                        message:'Provide valid user name.'
+                      })}
                       aria-invalid={errors.name ? 'true' : 'false'}
                       required
                     />
                     {errors.name && (
-                      <div className="invalid-feedback">{errors.name.message}</div>
+                      <p className="invalid-feedback text-danger">{errors.name.message}</p>
                     )}
                   </div>
                   <div className="mb-3">
@@ -111,12 +119,14 @@ const AccountDetails = () => {
                       id="formEmail"
                       name="email"
                       autoComplete="true"
-                      {...register('email')}
+                      {...register('email',{
+                        message:'Provide valid email address.'
+                      })}
                       aria-invalid={errors.email ? 'true' : 'false'}
                       required
                     />
                     {errors.email && (
-                      <div className="invalid-feedback">{errors.email.message}</div>
+                      <p className="invalid-feedback text-danger">{errors.email.message}</p>
                     )}
                   </div>
                   <div className="mb-3">
@@ -128,14 +138,16 @@ const AccountDetails = () => {
                       className="form-control"
                       id="formPassword"
                       name="password"
-                      {...register('password')}
+                      {...register('password',{
+                        message:'Provide valid 8 charactor password.'
+                      })}
                       aria-invalid={errors.password ? 'true' : 'false'}
                       required
                     />
                     {errors.password && (
-                      <div className="invalid-feedback">
+                      <p className="invalid-feedback text-danger">
                         {errors.password.message}
-                      </div>
+                      </p>
                     )}
                   </div>
                   <div className="mb-3">
@@ -148,12 +160,14 @@ const AccountDetails = () => {
                       id="formAge"
                       name="age"
                       autoComplete="true"
-                      {...register('age')}
+                      {...register('age',{
+                        message:'Provide valid age between 18 to 120.'
+                      })}
                       aria-invalid={errors.age ? 'true' : 'false'}
                       required
                     />
                     {errors.age && (
-                      <div className="invalid-feedback">{errors.age.message}</div>
+                      <p className="invalid-feedback text-danger">{errors.age.message}</p>
                     )}
                   </div>
                   <div className="mb-3">
@@ -166,18 +180,20 @@ const AccountDetails = () => {
                       id="formPhone"
                       name="phone"
                       autoComplete="true"
-                      {...register('phone')}
+                      {...register('phone',{
+                        message:'Provide valid 10 digit phone number.'
+                      })}
                       aria-invalid={errors.phone ? 'true' : 'false'}
                       required
                     />
                     {errors.phone && (
-                      <div className="invalid-feedback">
+                      <p className="invalid-feedback text-danger">
                         {errors.phone.message}
-                      </div>
+                      </p>
                     )}
                   </div>
                   <button type="submit" className="btn btn-primary">
-                    Save Changes
+                    Save
                   </button>
                 </form>
               </div>
@@ -187,6 +203,5 @@ const AccountDetails = () => {
       )}
     </div>
   );
-};
+}
 
-export default AccountDetails;

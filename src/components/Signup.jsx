@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Signup() {
+   // using use Navigate hook form react router dom 
   const navigate = useNavigate();
-
+  // handling register button 
   const handleSubmit = () =>(
     alert('Your are registered move to login page'),
     navigate('/login')
